@@ -1,0 +1,22 @@
+{% trans_default_domain 'news' %}
+    
+{{ form_start(form) }}
+    <div class="uk-form-row">
+        {{ form_label(form.name, 'news.category.form.name'|trans, {'label_attr': {'class': 'uk-form-label'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'md-input'}}) }}
+    </div>
+    <div class="uk-form-row">
+        {{ form_label(form.description, 'news.category.form.description'|trans, {'label_attr': {'class': 'uk-form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'md-input'}}) }}
+    </div>
+    <div class="uk-modal-footer uk-text-right">
+        <button type="button" class="md-btn md-btn-flat uk-modal-close">{{ "news.category.form.cancel"|trans }}</button>
+        <button class="md-btn md-btn-success" type="submit">
+            {% if category is defined %}
+                {{ 'news.category.form.update'|trans }}
+            {% else %}
+                {{ 'news.category.form.create'|trans }}
+            {% endif %}
+        </button>
+    </div>
+{{ form_end(form) }}

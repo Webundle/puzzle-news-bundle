@@ -1,0 +1,13 @@
+news_admin:
+    resource: '@NewsBundle/Resources/config/routing/admin.yml'
+    prefix:   '%admin_prefix%news'
+    host: '%admin_host%'
+    options:
+        expose: true
+
+news_app:
+    resource: '@NewsBundle/Resources/config/routing/app.yml'
+    prefix:   '/news'
+    host: '%host%'
+    options:
+        expose: true

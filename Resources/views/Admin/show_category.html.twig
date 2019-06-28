@@ -1,0 +1,156 @@
+{% trans_default_domain 'news' %}
+
+{% extends 'NewsBundle:Admin:layout.html.twig' %}
+
+{% block title %} {{ parent() }} - {{ "news.category.show.title"|trans|capitalize }} {{ category.name }} {% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <div class="md-card-head-menu" data-uk-dropdown="{pos:'bottom-right'}">
+        <a class="uk-text-bold" href="#" data-uk-modal="{ center:true }">
+            {{ 'news.category.show.actions'|trans|upper }}
+            <i class="fa fa-ellipsis-v"></i>
+        </a>
+        <div class="uk-dropdown">
+            <ul class="uk-nav">
+                <li>
+                    <a href="{{ url('puzzle_admin_news_category_create', {'parent': category.id}) }}" class="show-modal">
+                        <i class="fa fa-plus uk-margin-small-right"></i>
+                        {{ "news.category.show.new"|trans }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url('puzzle_admin_news_post_create', {'category': category.id}) }}">
+                        <i class="fa fa-plus uk-margin-small-right"></i>
+                        {{ 'news.category.show.new_post'|trans }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('puzzle_admin_news_category_list') }} ">
+       {{ 'news.category.list.title'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    {% if category.parentNode is not empty %}
+    <a href=" {{ url('puzzle_admin_news_category_show', { 'id': category.parentNode.id }) }}">
+       ...
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    {% endif %}
+    <em>{{ "news.category.show.title"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+     <div id="page_content_inner">
+        <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+            <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.category.show.name'|trans }} : </label>
+                            <span>{{ category.name }}</span>
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.category.show.created_at'|trans }} : </label>
+                            <span>{{ date_time_ago(category.createdAt) }}</span>
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.category.show.updated_at'|trans }} : </label>
+                            <span>{{ date_time_ago(category.updatedAt) }}</span>
+                        </div>
+                        <div>
+                            <label class="uk-text-bold">{{ 'news.category.show.description'|trans }} : </label>
+                            <span>{{ category.description }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-text-center uk-margin-top">
+                    <a href="{{ url('puzzle_admin_news_category_update', { 'id': category.id })}}" class="show-modal md-btn md-btn-primary" id="{{ category.id }}">
+                        <i class="fa fa-pencil"></i>
+                        {{ "news.category.show.update"|trans }}
+                    </a>
+                    <a href="#" class="remove-item md-btn md-btn-danger" data-route="{{ url('puzzle_admin_news_category_delete', {'id' : category.id}) }}" data-label="{{ category.name }}" data-title="{{ 'news.category.delete.title' }}" data-text="{{ 'news.category.delete.description'|trans({'%categoryName%': category.name}) }}">
+                        <i class="fa fa-trash-o"></i>
+                        {{ "news.category.show.delete"|trans }}
+                    </a>
+                </div>
+            </div>
+            <div class="uk-width-xLarge-7-10 uk-width-large-7-10">
+                <div class="md-card">
+                    {% if category.childNodes is not empty %}
+                        <div class="toggle-action uk-hidden">
+                            <select class="remove-list">
+                                <option value="">{{ 'news.category.list.grouped_actions'|trans }}</option>
+                                <option value="delete">{{ 'news.newsiser.list.delete'|trans }}</option>
+                            </select>
+                            <input type="hidden" value="{{ childNodes|length|default('0') }}" id="toggle-items-count">
+                            <input type="hidden" value="0" id="toggle-items-checked-count">
+                        </div>
+                    {% endif %}
+                    <div class="md-card-content">
+                        <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th class="no-sort"></th>
+                                <th class="no-sort">{{ "news.category.show.name"|trans }}</th>
+                                <th>{{ "news.category.list.created_at"|trans }}</th>
+                                <th>{{ "news.category.list.updated_at"|trans }}</th>
+                                <th class="no-sort uk-text-right">{{ "news.category.show.actions"|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for child in childNodes %}
+                                    <tr class="toggleable" id="item-{{ child.id }}">
+                                        <td>
+                                            <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                                <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ child.id }}">&#xE835;</i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ url('puzzle_admin_news_category_show', {'id': child.id}) }}">{{ child.name }}</a>
+                                        </td>
+                                        <td>{{ date_time_ago(child.createdAt) }}</td>
+                                        <td>{{ date_time_ago(child.updatedAt) }}</td>
+                                        <td class="uk-text-right">
+                                            <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                                <a><i class="fa fa-align-justify"></i></a>
+                                                <div class="uk-dropdown uk-dropdown-small uk-text-left" aria-hidden="true">
+                                                    <ul class="uk-nav uk-nav-dropdown">
+                                                        <li>
+                                                            <a href="{{ url('puzzle_admin_news_category_show', {'id': child.id}) }}">
+                                                                <i class="fa fa-eye"></i>
+                                                                {{ "news.category.list.show"|trans }}
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{ url('puzzle_admin_news_category_update', {'id': child.id, 'parent': category.id}) }}" class="show-modal">
+                                                                <i class="fa fa-pencil"></i>
+                                                                {{ "news.category.list.update"|trans }}
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" data-route="{{ url('puzzle_admin_news_category_delete', {'id' : child.id}) }}" data-label="{{ child.name }}" class="remove-item" data-title="{{ 'news.category.delete.title' }}" data-text="{{ 'news.category.delete.description'|trans({'%categoryName%': child.name}) }}">
+                                                                <i class="fa fa-trash-o uk-text-danger"></i>
+                                                                {{ "news.category.list.delete"|trans }}
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

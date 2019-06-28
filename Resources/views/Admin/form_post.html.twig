@@ -1,0 +1,83 @@
+{% trans_default_domain 'news' %}
+
+{{ form_start(form, {'attr': {'id': 'form_validation', 'class': 'uk-form-stacked'}}) }}
+    <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+        <div class="uk-width-xLarge-7-10 uk-width-large-7-10">
+            <div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-grid uk-grid-divider uk-grid-medium" data-uk-grid-margin>
+                        <div class="uk-width-large-1-1">
+                            <div class="uk-form-row">
+                                {{ form_label(form.name, 'news.post.form.name'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.name, {'attr' : {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_label(form.shortDescription, 'news.post.form.short_description'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                                {{ form_widget(form.shortDescription, {'attr' : {'class': 'md-input'}}) }}
+                            </div>
+                            <div class="uk-form-row">
+                                {{ form_widget(form.description, { 'id': 'wysiwyg_ckeditor', 'attr' : { 'class' : 'md-input' } }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-width-xLarge-3-10 uk-width-large-3-10">
+        	<div class="md-card">
+                <div class="md-card-content">
+                    <div class="uk-form-row">
+                        {{ form_label(form.category, 'news.post.form.category'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {{ form_widget(form.category, {'attr': {'data-md-selectize' : true}}) }}
+                    </div>
+
+                    <div class="uk-form-row">
+                        {{ form_label(form.tags, 'news.post.form.tags'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {% if post is defined and post.tags is not empty %}
+                            {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}, 'value': post.tags|join(',')}) }}
+                        {% else %}
+                            {{ form_widget(form.tags, {'attr': {'data-role' : 'materialtags'}}) }}
+                        {% endif %}
+                    </div>
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.visible, {'attr': {'data-switchery' : true}}) }}
+                        </div>
+                        {{ form_label(form.visible, 'news.post.form.visible'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.enableComments, {'attr': {'data-switchery' : true}}) }}
+                        </div>
+                        {{ form_label(form.enableComments, 'news.post.form.enable_comments'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                    </div>
+                    <div class="uk-form-row">
+                        <div class="uk-float-right">
+                            {{ form_widget(form.flash, {'id': 'flash', 'attr': {'data-switchery' : true}}) }}
+                        </div>
+                        {{ form_label(form.flash, 'news.post.form.flash'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                    </div>
+                    <div class="uk-form-row {% if post is not defined or post.flashExpiresAt is empty %}uk-hidden{% endif %}" id="flash-expires-at-row">
+                        {{ form_label(form.flashExpiresAt, 'news.post.form.flash_expires_at'|trans, {'label_attr': {'class' : 'uk-form-label'}}) }}
+                        {% if post is not defined or post.flashExpiresAt is empty %}
+                            {{ form_widget(form.flashExpiresAt, {'attr': {'class': 'datepicker'}}) }}
+                        {% else %}
+                            {{ form_widget(form.flashExpiresAt, {'attr': {'class': 'datepicker'}, 'value' : post.flashExpiresAt|date('Y-m-d H:i') }) }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.picture, 'data': post is defined ? post.picture : null, 'type': 'picture', 'context': 'news/post', 'multiple': false })) }}
+            
+        </div>
+        <div class="uk-width-1-1 uk-text-center uk-margin-top">
+            <a class="md-btn md-btn-default" href="{{ post is defined ? url('puzzle_admin_news_post_show', {'id': post.id}) : url('puzzle_admin_news_post_list') }}">
+                {{ 'news.post.form.cancel'|trans }}
+            </a>
+            <button class="md-btn md-btn-success" type="submit">
+                {{ post is defined ? 'news.post.form.update'|trans : 'news.post.form.create'|trans }}
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}

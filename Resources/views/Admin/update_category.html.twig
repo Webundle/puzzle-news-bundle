@@ -1,0 +1,10 @@
+{% trans_default_domain 'news' %}
+
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3>{{ "news.category.update.title"|trans }}</h3>
+    </div>
+    <div class="uk-modal-body">
+        {% include 'NewsBundle:Admin:form_category.html.twig' with {'form': form, 'category': category} %}
+    </div>
+</div>

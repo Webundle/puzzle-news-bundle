@@ -1,0 +1,132 @@
+{% trans_default_domain 'news' %}
+
+{% extends 'NewsBundle:Admin:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "news.post.list.title"|trans|capitalize }}{% endblock %}
+
+{% block headingactions %}
+<div class="heading_actions">
+    <a href="{{ url('puzzle_admin_news_post_create') }}">
+       	<span class="uk-text-bold">{{ "news.post.list.new"|trans|upper }}</span>
+        <i class="fa fa-plus-circle"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+	<em>{{ "news.post.list.title"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+<div id="page_content_inner">
+    <div class="md-card">
+        <div class="md-card-content">
+            <table id="dt_individual_search" class="uk-table uk-table-hover" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th class="no-sort">
+                        {% if posts is not empty %}
+                            <div class="toggle-action uk-hidden">
+                                <select class="grouped-actions">
+                                    <option value="">{{ 'news.post.list.grouped_actions'|trans }}</option>
+                                    <option value="delete">{{ 'news.post.list.delete'|trans }}</option>
+                                </select>
+                                <input type="hidden" value="{{ posts|length|default('0') }}" id="toggle-items-count">
+                                <input type="hidden" value="0" id="toggle-items-checked-count">
+                            </div>
+                        {% endif %}
+                    </th>
+                    <th>{{ "news.post.list.name"|trans }}</th>
+                    <th>{{ "news.post.list.category"|trans }}</th>
+                    <th>{{ "news.post.list.updated_at"|trans }}</th>
+                    <th>{{ "news.post.list.enable_comments"|trans }}</th>
+                    <th class="uk-text-right no-sort">{{ "news.post.list.actions"|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr class="toggleable" id="item-{{ post.id }}">
+                            <td>
+                                <a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select" href="#">
+                                    <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ post.id }}">&#xE835;</i>
+                                </a>
+                            </td>
+                            <td>
+                            	<div class="uk-text-truncate" style="width: 250px;">
+                                    <a href="{{ url('puzzle_admin_news_post_show', {'id': post.id}) }}" title="{{ post.name }}">
+                                        {{ post.name }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td>{{ post.category.name }}</td>
+                            <td>{{ date_time_ago(post.updatedAt) }}</td>
+                            <td class="uk-text-center">
+                                {% if post.enableComments == 1 %}
+                                    <a href="{{ url('puzzle_admin_news_comment_list', {'id': post.id}) }}">
+                                    	<i class="fa fa-comments"></i>
+                                    	{{ post.comments|length }}
+                                    </a>
+                                {% else %}
+                                    <span class="uk-badge md-bg-grey-900">{{ 'news.post.list.enable_comments_no'|trans }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="uk-text-right">
+                                <div class="uk-button-dropdown" data-uk-dropdown="{mode:'click', pos:'bottom-right'}">
+                                    <a><i class="fa fa-align-justify"></i></a>
+                                    <div class="uk-dropdown uk-dropdown-small uk-dropdown-bottom uk-text-left" aria-hidden="true">
+                                        <ul class="uk-nav uk-nav-dropdown">
+                                        	<li>
+                                                <a href="{{ url('puzzle_admin_news_post_show', {'id': post.id}) }}">
+                                                    <i class="fa fa-eye"></i>
+                                                    {{ 'news.post.list.show'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ url('puzzle_admin_news_post_update', {'id': post.id}) }}">
+                                                    <i class="fa fa-pencil"></i>
+                                                    {{ 'news.post.list.update'|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ url('puzzle_admin_news_post_update_gallery', {'id': post.id}) }}">
+                                                    <i class="fa fa-list"></i>
+                                                    {{ "news.post.list.manage_gallery"|trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-route="{{ url('puzzle_admin_news_post_delete', {'id': post.id}) }}" data-text="{{ 'news.post.delete.description'|trans({'%postName%': post.name}) }}" data-label="{{ post.name }}" class="remove-item">
+                                                    <i class="fa fa-trash-o uk-text-danger"></i>
+                                                    {{ "news.post.list.delete"|trans }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		$('body').on('change', '.grouped-actions', function(e){
+			e.preventDefault();
+			switch($(this).val()){
+				case 'delete':
+					var modalId = 'delete-list-modal';
+					
+					UIkit.modal("#" + modalId).show();
+					$('#' + modalId).find('#delete-list-btn').data('delete-item-route', 'puzzle_admin_news_post_delete');
+				default:
+					break;
+			}
+		});
+	</script>
+{% endblock %}

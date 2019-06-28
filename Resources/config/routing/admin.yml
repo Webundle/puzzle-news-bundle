@@ -1,0 +1,66 @@
+# Admin
+puzzle_admin_news_category_list:
+    path:     /category/list
+    defaults: { _controller: 'NewsBundle:Admin:listCategories' }
+
+puzzle_admin_news_category_create:
+    path:     /category/create
+    defaults: { _controller: 'NewsBundle:Admin:createCategory' }
+
+puzzle_admin_news_category_show:
+    path:     /category/{id}
+    defaults: { _controller: 'NewsBundle:Admin:showCategory' }
+
+puzzle_admin_news_category_update:
+    path:     /category/{id}/update
+    defaults: { _controller: 'NewsBundle:Admin:updateCategory' }
+    
+puzzle_admin_news_category_delete:
+    path:     /category/{id}/delete
+    defaults: { _controller: 'NewsBundle:Admin:deleteCategory' }
+
+# Admin
+puzzle_admin_news_post_list:
+    path:     /post/list
+    defaults: { _controller: 'NewsBundle:Admin:listPosts' }
+
+puzzle_admin_news_post_create:
+    path:     /post/create
+    defaults: { _controller: 'NewsBundle:Admin:createPost' }
+
+puzzle_admin_news_post_show:
+    path:     /post/{id}/show
+    defaults: { _controller: 'NewsBundle:Admin:showPost' }
+    
+puzzle_admin_news_post_update:
+    path:     /post/{id}/update
+    defaults: { _controller: 'NewsBundle:Admin:updatePost' }
+
+puzzle_admin_news_post_update_gallery:
+    path:     /post/{id}/update-gallery
+    defaults: { _controller: 'NewsBundle:Admin:updatePostGallery' }
+
+puzzle_admin_news_post_delete:
+    path:     /post/{id}/delete
+    defaults: { _controller: 'NewsBundle:Admin:deletePost' }
+
+# Admin
+puzzle_admin_news_comment_list:
+    path:     /post/{id}/comment/list
+    defaults: { _controller: 'NewsBundle:Admin:listComments' }
+
+puzzle_admin_news_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: 'NewsBundle:Admin:updateComment' }
+    
+puzzle_admin_news_comment_approve:
+    path:     /comment/{id}/approve
+    defaults: { _controller: 'NewsBundle:Admin:approveComment' }
+    
+puzzle_admin_news_comment_disapprove:
+    path:     /comment/{id}/disapprove
+    defaults: { _controller: 'NewsBundle:Admin:disapproveComment' }
+
+puzzle_admin_news_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: 'NewsBundle:Admin:deleteComment' }

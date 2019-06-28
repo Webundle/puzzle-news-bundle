@@ -1,0 +1,31 @@
+{
+	"name" : "webundle/puzzle-news-bundle",
+	"description" : "Manage articles and news",
+	"type" : "symfony-bundle",
+	"authors" : [{
+			"name" : "AGNES Gnagne Cedric",
+			"email" : "cecenho55@gmail.com"
+		}
+	],
+	"keywords" : [
+		"news articles"
+	],
+	"license" : "MIT",
+	"require" : {
+		"php" : ">=5.5.9",
+		"webundle/puzzle-admin-bundle" : "^1.0",
+		"webundle/puzzle-user-bundle" : "^1.0",
+		"webundle/puzzle-media-bundle" : "^1.0"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Puzzle\\NewsBundle" : ""
+		}
+	},
+	"target-dir" : "Puzzle/NewsBundle",
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0-dev"
+		}
+	}
+}

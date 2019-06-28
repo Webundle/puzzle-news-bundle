@@ -1,0 +1,21 @@
+services:
+    # Listener
+    news.post_listener:
+        class: Puzzle\NewsBundle\Listener\PostListener
+        arguments: [ "@doctrine.orm.entity_manager" ]
+        public: false
+        tags:
+            - { name: kernel.event_listener, event: "news.post.created", method: onCreated }
+    news.category_listener:
+        class: Puzzle\NewsBundle\Listener\CategoryListener
+        arguments: [ "@doctrine.orm.entity_manager", "@translator"]
+        tags:
+            - { name: kernel.event_listener, event: "admin.installing", method: onAdminInstalling } 
+                   
+    # Twig extension
+    news.twig.extension:
+        class: Puzzle\NewsBundle\Twig\NewsExtension
+        arguments: [ '@doctrine.orm.entity_manager', "@knp_paginator" ]
+        public: false
+        tags:
+            - { name: twig.extension }

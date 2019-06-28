@@ -1,0 +1,33 @@
+{% trans_default_domain 'news' %}
+
+{% extends 'NewsBundle:Admin:layout.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ "news.post.update.title"|trans|capitalize }} {{ post.name|capitalize }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('puzzle_admin_news_post_list') }} ">
+       {{ 'news.post.list.title'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "news.post.update.title"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+    <div id="page_content_inner">
+        {% include 'NewsBundle:Admin:form_post.html.twig' with {'form': form, 'post': post} %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script>
+		$('body').on('change', '#flash', function(e){
+			if ($(this).is(':checked')) {
+				$('#flash-expires-at-row').removeClass('uk-hidden');
+			}else{
+				$('#flash-expires-at-row').addClass('uk-hidden');
+			}
+		});
+	</script>
+{% endblock %}

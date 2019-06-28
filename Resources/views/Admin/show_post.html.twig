@@ -1,0 +1,128 @@
+{% trans_default_domain 'news' %}
+
+{% extends 'NewsBundle:Admin:layout.html.twig' %}
+
+{% block title %} {{ parent() }} - {{ "news.post.show.title"|trans|capitalize }} {{ post.name }} {% endblock %}
+
+{% block breadcrumbmodule %}
+    {{ parent() }}
+    <a href=" {{ url('puzzle_admin_news_post_list') }} ">
+       {{ 'news.post.list.title'|trans|capitalize }}
+    </a>
+    <i class="fa fa-chevron-right"></i>
+    <em>{{ "news.post.show.title"|trans|capitalize }}</em>
+{% endblock %}
+
+{% block content %}
+     <div id="page_content_inner">
+        <div class="uk-grid uk-grid-medium" data-uk-grid-margin>
+            <div class="uk-width-1-2">
+                <div class="md-card">
+                    <div class="md-card-content">
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.name'|trans }} : </label>
+                            <span>{{ post.name }}</span>
+                        </div>
+                        {% if post.shortDescription is not empty %}
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.short_description'|trans }} : </label>
+                            <span>{{ post.shortDescription }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.category'|trans }} : </label>
+                            <span>{{ post.category.name }}</span>
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.author'|trans }} : </label>
+                            <span>{{ post.createdBy }}</span>
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.visible'|trans }} : </label>
+                            {% if post.visible == 1 %}
+                                <span class="uk-badge uk-badge-success">{{ 'news.post.show.visible_yes'|trans }}</span>
+                            {% else %}
+                                <span class="uk-badge">{{ 'news.post.show.visible_no'|trans }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.enable_comments'|trans }} : </label>
+                                {% if post.enableComments == 1 %}
+                                	<i class="fa fa-comments"></i>
+                                	{{ post.comments|length }}
+                                    <a href="{{ url('puzzle_admin_news_comment_list', {'id': post.id}) }}">
+                                    	({{ 'news.post.show.enable_comments_yes'|trans }})
+                                    </a>
+                                {% else %}
+                                    <span class="uk-badge md-bg-grey-900">{{ 'news.post.list.enable_comments_no'|trans }}</span>
+                                {% endif %}
+                        </div>
+                        {% if post.tags is not empty %}
+                        	<label class="uk-text-bold">{{ 'news.post.show.tags'|trans }} : </label>
+                        	{% for tag in post.tags %}
+                        		<span class="uk-badge">{{ tag }}</span>
+                        	{% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-1-2">
+                <div class="md-card">
+                    <div class="md-card-content">
+                    	<div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.picture'|trans }} : </label>
+                            {% if post.picture is not empty %}
+                                {% set picture = puzzle_media_file(post.picture) %}
+                                {% if picture is not empty %}
+                                	<a href="{{ url('puzzle_admin_media_file_show', {'id': picture.id}) }}" class="show-modal">{{ 'news.post.show.view'|trans }}</a>
+                            	{% endif %} 
+                            {% else %}
+                            	<span>{{ 'news.post.show.undefined'|trans }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.created_at'|trans }} : </label>
+                            <span>{{ date_time_ago(post.createdAt) }}</span>
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.updated_at'|trans }} : </label>
+                            <span>{{ date_time_ago(post.updatedAt) }}</span>
+                        </div>
+                        <div class="uk-margin-bottom">
+                            {% if post.flash == 1 %}
+                                <label class="uk-text-bold">{{ 'news.post.show.flash_expires_at'|trans }} : </label>
+                                <span>{{ post.flashExpiresAt|date('d-m-Y H:i') }}</span>
+                            {% else %}
+                            	<label class="uk-text-bold">{{ 'news.post.show.flash'|trans }} : </label>
+                                <span class="uk-badge md-bg-grey-900">{{ 'news.post.show.flash_no'|trans }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="uk-margin-bottom">
+                            <label class="uk-text-bold">{{ 'news.post.show.archive'|trans }} : </label>
+                            <span>{{ post.archive }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%  if post.description is not empty %}
+            	<div class="uk-width-1-1">
+                    <div class="md-card">
+                        <div class="md-card-content">
+                            {{ post.description|raw }}
+                        </div>
+                    </div>
+                </div>
+			{% endif %}
+            <div class="uk-text-center uk-margin-top">
+                <a href="{{ url('puzzle_admin_news_post_update', { 'id': post.id })}}" class="md-btn md-btn-primary" id="{{ post.id }}">
+                    <i class="fa fa-pencil"></i>
+                    {{ "news.post.show.update"|trans }}
+                </a>
+                <a href="#" class="remove-item md-btn md-btn-danger" data-route="{{ url('puzzle_admin_news_post_delete', {'id' : post.id}) }}" data-label="{{ post.name }}" data-title="{{ 'news.post.delete.title' }}" data-text="{{ 'news.post.delete.description'|trans({'%postName%': post.name}) }}">
+                    <i class="fa fa-trash-o"></i>
+                    {{ "news.post.show.delete"|trans }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

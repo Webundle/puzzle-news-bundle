@@ -1,0 +1,51 @@
+# Post
+app_news_post_list:
+    path:     /post/list
+    defaults: { _controller: NewsBundle:App:listPosts }
+
+app_news_post_show:
+    path:     /post/{slug}
+    defaults: { _controller: NewsBundle:App:showPost }
+
+# Category
+app_news_category_list:
+    path:     /category/list
+    defaults: { _controller: NewsBundle:App:listCategories }
+
+app_news_category_show:
+    path:     /category/{id}/show
+    defaults: { _controller: NewsBundle:App:showCategory }
+
+# Archive
+app_news_archive_list:
+    path:     /archive/list
+    defaults: { _controller: NewsBundle:App:listArchives }
+
+app_news_archive_show:
+    path:     /archive/{id}/show
+    defaults: { _controller: NewsBundle:App:showArchive }
+
+# Comment
+app_news_comment_list:
+    path:     /post/{id}/comment/list
+    defaults: { _controller: NewsBundle:App:listComments }
+    
+app_news_comment_create:
+    path:     /post/{id}/comment/create
+    defaults: { _controller: NewsBundle:App:createComment }
+
+app_news_comment_update:
+    path:     /comment/{id}/update
+    defaults: { _controller: NewsBundle:App:updateComment }
+
+app_news_comment_delete:
+    path:     /comment/{id}/delete
+    defaults: { _controller: NewsBundle:App:deleteComment } 
+
+app_news_comment_vote_create:
+    path:     /comment/{id}/vote/create
+    defaults: { _controller: NewsBundle:App:createCommentVote } 
+
+app_news_comment_vote_delete:
+    path:     /comment/vote/{id}/delete
+    defaults: { _controller: NewsBundle:App:deleteCommentVote } 

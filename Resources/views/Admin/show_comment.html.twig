@@ -1,0 +1,26 @@
+<div class="uk-modal-dialog">
+    <div class="uk-modal-header">
+        <h3 class="uk-modal-title">{{ 'news.comment.show.title'|trans }}</h3>
+    </div>
+    <div>
+        <div class="uk-margin-large-bottom">
+            <ul class="uk-comment-list" id="list-comments">
+                <li id="{{ comment.id }}">
+                    <article class="uk-comment">
+                        <header class="uk-comment-header">
+                            <img class="md-user-image uk-comment-avatar" src="{{ comment.createdBy.picture }}" alt="">
+                            <h4 class="uk-comment-title">{{ comment.createdBy }}</h4>
+                            <div class="uk-comment-meta">{{ date_time_ago(comment.createdAt) }}</div>
+                        </header>
+                        <div class="uk-comment-body">
+                            <p>{{ comment.content }}</p>
+                        </div>
+                    </article>
+                    <div class="uk-text-right">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i> <span>{{ comment.votes|length }}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
