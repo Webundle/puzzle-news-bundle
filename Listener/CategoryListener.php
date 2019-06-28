@@ -3,11 +3,9 @@
 namespace Puzzle\NewsBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
-use Puzzle\NewsBundle\Entity\Archive;
-use Puzzle\NewsBundle\Event\PostEvent;
 use Puzzle\AdminBundle\Event\AdminInstallationEvent;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Puzzle\NewsBundle\Entity\Category;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class CategoryListener
 {
