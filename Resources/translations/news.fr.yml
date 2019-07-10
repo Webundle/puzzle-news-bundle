@@ -37,7 +37,7 @@ news:
             tags: 'Etiquettes'
             flash: 'Mettre en avant'
             flash_expires_at: 'Mettre en avant jusqu''au'
-            picture: 'Image de couverture'
+            file: 'Illustration'
             cancel: 'Annuler'
             create: 'Ajouter'
             update: 'Modifier'
@@ -61,9 +61,10 @@ news:
             updated_at: 'Date d''édition'
             delete: 'Supprimer'
             update: 'Modifier'
+            update_gallery: 'Gérer la galerie'
             undefined: 'Non défini'
             view: 'Afficher'
-            picture: 'Image de couverture'
+            file: 'Illustration'
             archive: 'Archive'
         create: 
             title: 'Nouvel article'
@@ -71,10 +72,10 @@ news:
         update: 
             title: 'Modifier l''article'
             success: 'L''article %postName% a été modifé avec succès'
-        manage_gallery: 
+        update_gallery: 
             title: 'Modifier la galerie'
             success: 'La galerie d''images de l''article %postName% a été modifée avec succès'
-            cancel: 'Annuler'
+            back: 'Retour'
             update: 'Modifier'
             pictures: 'Liste des images'
             delete: 'Supprimer'

@@ -227,14 +227,14 @@ class AdminController extends Controller
             $flashExpiresAt = isset($data['flash']) && $data['flash'] == true ? new \DateTime($data['flashExpiresAt']) : null;
             $post->setFlashExpiresAt($flashExpiresAt);
             
-            $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
+            $file = $request->request->get('file') !== null ? $request->request->get('file') : $data['file'];
             
-            if ($picture !== null) {
+            if ($file !== null) {
                 $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $picture,
+                    'path' => $file,
                     'context' => MediaUtil::extractContext(Post::class),
                     'user' => $this->getUser(),
-                    'closure' => function($filename) use ($post) {$post->setPicture($filename);}
+                    'closure' => function($filename) use ($post) {$post->setFile($filename);}
                 ]));
             }
             
@@ -283,14 +283,14 @@ class AdminController extends Controller
             $flashExpiresAt = isset($data['flash']) && $data['flash'] == true ? new \DateTime($data['flashExpiresAt']) : null;
             $post->setFlashExpiresAt($flashExpiresAt);
             
-            $picture = $request->request->get('picture') !== null ? $request->request->get('picture') : $data['picture'];
+            $file = $request->request->get('file') !== null ? $request->request->get('file') : $data['file'];
             
-            if ($post->getPicture() === null || $post->getPicture() !== $picture) {
+            if ($post->getFile() === null || $post->getFile() !== $file) {
                 $this->get('event_dispatcher')->dispatch(MediaEvents::COPY_FILE, new FileEvent([
-                    'path' => $picture,
+                    'path' => $file,
                     'context' => MediaUtil::extractContext(Post::class),
                     'user' => $this->getUser(),
-                    'closure' => function($filename) use ($post) {$post->setPicture($filename);}
+                    'closure' => function($filename) use ($post) {$post->setFile($filename);}
                 ]));
             }
             

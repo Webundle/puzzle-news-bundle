@@ -30,7 +30,7 @@ class AbstractPostType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
             ])
-            ->add('picture', HiddenType::class, [
+            ->add('file', HiddenType::class, [
                 'required' => false,
                 'mapped' => false
             ])

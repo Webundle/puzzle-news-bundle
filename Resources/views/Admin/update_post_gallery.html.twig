@@ -2,7 +2,7 @@
 
 {% extends 'NewsBundle:Admin:layout.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ "news.post.update.title"|trans|capitalize }} {% endblock %}
+{% block title %}{{ parent() }} - {{ "news.post.update_gallery.title"|trans|capitalize }} {% endblock %}
 
 {% block breadcrumbmodule %}
     {{ parent() }}
@@ -14,49 +14,36 @@
        {{ 'news.post.show.title'|trans|capitalize }}
     </a>
     <i class="fa fa-chevron-right"></i>
-    <em>{{ "news.post.manage_gallery.title"|trans|capitalize }}</em>
+    <em>{{ "news.post.update_gallery.title"|trans|capitalize }}</em>
 {% endblock %}
 
 {% block content %}
     <div id="page_content_inner">
     	{{ form_start(form, {'attr': {'id': 'form_validation', 'class': 'uk-form-stacked'}}) }}
 		    <div class="uk-width-1-1">
-	            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.pictures, 'data': post.pictures, 'type': 'picture', 'context': 'news/post', 'multiple': true })) }}
+	            {{ render(controller('MediaBundle:Admin:embedFile', {'formData': form.pictures, 'data': post.pictures is not empty ? post.pictures|join(',') : null, 'type': 'picture', 'context': 'news/post', 'multiple': true })) }}
 	        </div>
-		    <div class="uk-width-large-1-1 uk-margin-large-top">
-	            <div class="gallery_grid uk-grid-width-medium-1-4 uk-grid-width-large-1-5" data-uk-grid="{gutter: 16}" id="list-pictures">
-                        <input type="hidden" value="{{ post.pictures|length|default('0') }}" id="toggle-items-count">
-                        <input type="hidden" value="0" id="toggle-items-checked-count">
-                        <input type="hidden" value="" id="toggle-items-checked-id" name="pictures_to_remove">
-	                {% for key, picture in post.pictures %}
-	                    <div>
-	                        <div class="md-card md-card-hover">
-	                            <div class="gallery_grid_picture md-card-content" id="grid_picture_{{ key }}">
-	                                <a href="{{ picture }}" class="selector_files_from_media multiple-select">
-	                                    <img src="{{ picture }}" id="item_{{ key }}">
-	                                </a>
-	                                <div class="gallery_grid_image_caption" style="height:20px">
-	                                    <div class="gallery_grid_image_menu" data-uk-dropdown="{pos:'top-right'}">
-	                                    	<a class="uk-text-muted uk-text-small uk-text-left toggleable-btn-select uk-text-danger" href="#">
-	                                    		<span>{{ 'news.post.manage_gallery.delete'|trans }}</span>
-	                                            <i class="material-icons md-24 toggle-icon toggle-item" id="toggle-item-{{ picture }}">&#xE835;</i>
-	                                        </a>
-	                                	</div>
-	                                </div>
-	                            </div>
-	                        </div>
-	                </div>
-	                {% endfor %}
-	            </div>
-	        </div>
-		    <div class="uk-text-center uk-margin-large-top">
+		    <div class="uk-margin-top">
 		        <a class="md-btn md-btn-default" href="{{ url('puzzle_admin_news_post_show', {'id': post.id}) }}">
-		            {{ 'news.post.manage_gallery.cancel'|trans }}
+		            {{ 'news.post.update_gallery.back'|trans }}
 		        </a>
 		        <button class="md-btn md-btn-success" type="submit">
-		                {{ 'news.post.manage_gallery.update'|trans }}
+		                {{ 'news.post.update_gallery.update'|trans }}
 		        </button>
 		    </div>
 		{{ form_end(form) }}
 	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+    {% javascripts
+        'bundles/media/js/upload.js'
+        output="compiled/js/puzzle_admin_news_post_update_gallery.min.js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+	<script>
+		// Preview picture
+		altair_form_file_upload.preview();
+	</script>
 {% endblock %}

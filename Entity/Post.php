@@ -56,7 +56,7 @@ class Post
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $picture;
+    private $file;
 
     /**
      * @ORM\Column(name="tags", type="array", nullable=true)
@@ -209,13 +209,13 @@ class Post
         return $this->flashExpiresAt;
     }
     
-    public function setPicture($picture) :self {
-        $this->picture = $picture;
+    public function setFile($file) :self {
+        $this->file = $file;
         return $this;
     }
     
-    public function getPicture() :?string {
-        return $this->picture;
+    public function getFile() :?string {
+        return $this->file;
     }
     
     public function setPictures($pictures) :self {

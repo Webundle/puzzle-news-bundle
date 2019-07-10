@@ -21,7 +21,17 @@
 
 {% block javascripts %}
 	{{ parent() }}
+    {% javascripts
+        'bundles/media/js/upload.js'
+        output="compiled/js/puzzle_admin_news_post_update.min.js"
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 	<script>
+		// Preview picture
+		altair_form_file_upload.preview();
+
+		// Toggle flash expires at
 		$('body').on('change', '#flash', function(e){
 			if ($(this).is(':checked')) {
 				$('#flash-expires-at-row').removeClass('uk-hidden');

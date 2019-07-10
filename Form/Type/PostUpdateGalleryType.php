@@ -18,6 +18,7 @@ class PostUpdateGalleryType extends AbstractPostType
         
         $builder
             ->remove('name')
+            ->remove('shortDescription')
             ->remove('description')
             ->remove('category')
             ->remove('enableComments')
